@@ -13,7 +13,6 @@ db(dbUrl)
   .then(() => {
     app.set('config', config);
     app.set('pkg', pkg);
-    //app.use(cors());
     app.use(helmet()); //Helmet ayuda a proteger la aplicación de algunas vulnerabilidades web conocidas mediante el establecimiento correcto de cabeceras HTTP.
     app.use(express.urlencoded({ extended: false }));
     app.use(express.json());

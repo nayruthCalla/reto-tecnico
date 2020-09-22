@@ -1,16 +1,17 @@
+/* eslint-disable max-len */
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 const db = require('../services/connection');
 const { dbUrl } = require('../config');
 
-module.exports = (secret) => (req, resp, next) => {
+module.exports = secret => (req, resp, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
     return next();
   }
 
-  const [type, token] = authorization.split(' ');
+  const [type, token] = authorization.replace(/ +/, ' ').split(' ');
 
   if (type.toLowerCase() !== 'bearer') {
     return next();
@@ -21,7 +22,7 @@ module.exports = (secret) => (req, resp, next) => {
       return next(403);
     }
     // TODO: Verificar identidad del usuario usando `decodeToken.uid`
-    console.info(decodedToken);
+    // console.info(decodedToken);
 
     db(dbUrl)
       .then((db) => {
@@ -39,17 +40,22 @@ module.exports = (secret) => (req, resp, next) => {
 };
 
 
-module.exports.isAuthenticated = (req) => (
-  // TODO: decidir por la informacion del request si la usuarix esta autenticada
-  false
+module.exports.isAuthenticated = req => (
+  // TODO: decidir por la informacion del request si la usuaria esta autenticada
+  // req del authMiddleware => middleware requireAdmin
+  req.userAuth
+
 );
 
-
-module.exports.isAdmin = (req) => (
+module.exports.isAdmin = req => (
   // TODO: decidir por la informacion del request si la usuarix es admin
-  false
+  req.userAuth.roles
 );
 
+module.exports.isOwnerUser = req => (
+  // TODO: decidir por la informacion del request si la usuarix es admin
+  req.userAuth.id
+);
 
 module.exports.requireAuth = (req, resp, next) => (
   (!module.exports.isAuthenticated(req))
@@ -57,12 +63,19 @@ module.exports.requireAuth = (req, resp, next) => (
     : next()
 );
 
-
 module.exports.requireAdmin = (req, resp, next) => (
-  // eslint-disable-next-line no-nested-ternary
   (!module.exports.isAuthenticated(req))
     ? next(401)
     : (!module.exports.isAdmin(req))
       ? next(403)
       : next()
 );
+
+module.exports.requireAdminOrOwnerUser = (req, resp, next) => (
+  // console.info(req.userAuth);
+  // console.info(typeof req.userAuth.id)
+  (req.userAuth.roles.admin || (req.userAuth.id === req.params.uid || req.userAuth.email === req.params.uid))
+    ? next(403)
+    : next()
+);
+
