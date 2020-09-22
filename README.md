@@ -1,5 +1,10 @@
 # reto-tecnico
 API-REST
+## Como consumir la API
+Esta desplegada en la siguiente ruta: http://157.230.57.86:8080/
+---
+### `Cración de una orden`
+![Get/Productos](./img/api.png)
 ##  Tecnologías Utilizadas
 * [Express](https://expressjs.com/)
 * [MongoDB](https://www.mongodb.com/)
