@@ -1,4 +1,4 @@
-# reto-tecnico
+# reto-técnico
 API-REST
 ## Como consumir la API
 Esta desplegada en la siguiente ruta: http://157.230.57.86:8080/
