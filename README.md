@@ -2,9 +2,14 @@
 API-REST
 ## Como consumir la API
 Esta desplegada en la siguiente ruta: http://157.230.57.86:8080/
+
 ---
-### `Cración de una orden`
-![Get/Productos](./img/api.png)
+### `Cración de un Producto`
+En Postman reemplazamos la rutal http://localhost:8080/products 
+![Post/Users](./img/creando-product.png)
+
+ Por la siguiente ruta http://157.230.57.86:8080/products
+ ![Post/Users](./img/crear-producto-despliegue.png)
 ##  Tecnologías Utilizadas
 * [Express](https://expressjs.com/)
 * [MongoDB](https://www.mongodb.com/)
